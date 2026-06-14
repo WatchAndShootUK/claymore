@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882030580439",
+    "project_id": "wasd-claymore",
+    "storage_bucket": "wasd-claymore.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882030580439:android:535603201343ed95eb1692",
+        "android_client_info": {
+          "package_name": "com.example.claymore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbtZVEXAaXxzm8zXNB_7HvnZTKnF0VQgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
