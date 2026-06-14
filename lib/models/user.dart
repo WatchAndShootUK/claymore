@@ -35,10 +35,10 @@ class User {
   String get getUserName =>
       '$rank ${firstName.isNotEmpty ? firstName[0] : ''} $lastName';
       
-  factory User.fromFirestore(String serviceNumber, Map<String, dynamic> data) {
+  factory User.fromFirestore(String id, Map<String, dynamic> data) {
     return User(
       id: data['id'] ?? '',
-      serviceNumber: serviceNumber,
+      serviceNumber: data['serviceNumber'] ?? '',
       rank: data['rank'] ?? '',
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
