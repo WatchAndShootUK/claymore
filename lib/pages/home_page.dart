@@ -1,6 +1,7 @@
 import 'package:claymore/models/control.dart';
 import 'package:claymore/models/user.dart';
 import 'package:claymore/pages/add_control.dart';
+import 'package:claymore/pages/right_hand_panel.dart';
 import 'package:claymore/services/firestore_service.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:claymore/ui/button.dart';
@@ -167,71 +168,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.fromLTRB(
-                                          0,
-                                          12,
-                                          12,
-                                          12,
-                                        ),
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsGeometry.all(
-                                                12,
-                                              ),
-                                              child: Image(
-                                                image: AssetImage(
-                                                  'assets/logo.jpg',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              margin: const EdgeInsets.fromLTRB(
-                                                0,
-                                                0,
-                                                12,
-                                                12,
-                                              ),
-                                              color: Colors.purple,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.fromLTRB(
-                                    0,
-                                    0,
-                                    12,
-                                    12,
-                                  ),
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        if (MediaQuery.of(context).size.width > 600)
+                          RightHandPanel(),
                       ],
                     ),
                   ),
