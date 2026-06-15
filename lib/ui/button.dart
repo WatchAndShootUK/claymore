@@ -21,7 +21,7 @@ class ClaymoreButton extends StatelessWidget {
     final compact = MediaQuery.of(context).size.width < 700;
 
     return SizedBox(
-      height: 48,
+      height: 36,
       width: compact
           ? (icon == null ? 130 : 48)
           : 130,

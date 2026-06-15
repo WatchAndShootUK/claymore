@@ -108,7 +108,7 @@ class Control {
     copy.createdAt = DateTime.now();
     copy.controlDate = DateTime.now();
     copy.controllingJTACId = currentUserId;
-    copy.supervisedById = currentUserId;
+    copy.supervisedById = '';
     copy.approved = false;
 
     return copy;

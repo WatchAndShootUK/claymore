@@ -104,6 +104,7 @@ class LoginPage extends StatelessWidget {
                           );
                           if (user != null) {
                             appData.currentUser = user;
+                            appData.selectedJtac = user;
 
                             await LoginCache.saveUserId(user.id);
                             

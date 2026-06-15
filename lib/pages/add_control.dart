@@ -9,6 +9,7 @@ import 'package:claymore/ui/date_picker.dart';
 import 'package:claymore/ui/dialogs.dart';
 import 'package:claymore/ui/dropdown.dart';
 import 'package:claymore/ui/textfield.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,423 +40,409 @@ class _AddControlDialogState extends State<AddControlDialog> {
     return Dialog(
       backgroundColor: Colors.grey.shade900,
       insetPadding: _isMobile ? EdgeInsets.all(12) : EdgeInsets.all(24),
-      child: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Text(
-                isEditing ? 'Edit Control' : 'Add New Control',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text(
+              isEditing ? 'Edit Control' : 'Add New Control',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 16),
-              Container(height: 1, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
 
-              Expanded(
-                child: SingleChildScrollView(
-                  child: IgnorePointer(
-                    ignoring: widget.readOnly,
-                    child: Column(
-                      spacing: 16,
-                      children: [
-                        SizedBox(height: 0),
-                        _section(
-                          title: 'About',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreDatePicker(
-                                    label: 'Date',
-                                    value: widget.control.controlDate,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.controlDate = value;
-                                      });
-                                    },
+            Expanded(
+              child: SingleChildScrollView(
+                child: IgnorePointer(
+                  ignoring: widget.readOnly,
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      SizedBox(height: 0),
+                      _section(
+                        title: 'About',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _fieldWrap(
+                              children: [
+                                ClaymoreDatePicker(
+                                  label: 'Date',
+                                  value: widget.control.controlDate,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.controlDate = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreTextField(
+                                  label: 'Ex/Op Name',
+                                  initialValue: widget.control.operationName,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.operationName = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreDropdown<CountryLocation>(
+                                  label: 'Location',
+                                  value: countryLocations.firstWhere(
+                                    (country) =>
+                                        country.name ==
+                                        widget.control.controlLocation,
+                                    orElse: () => countryLocations.first,
                                   ),
-                                  ClaymoreTextField(
-                                    label: 'Ex/Op Name',
-                                    initialValue: widget.control.operationName,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.operationName = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreDropdown<CountryLocation>(
-                                    label: 'Location',
-                                    value: countryLocations.firstWhere(
-                                      (country) =>
-                                          country.name ==
-                                          widget.control.controlLocation,
-                                      orElse: () => countryLocations.first,
-                                    ),
-                                    items: countryLocations,
-                                    itemLabel: (country) => country.name,
-                                    onChanged: (country) {
-                                      if (country == null) return;
+                                  items: countryLocations,
+                                  itemLabel: (country) => country.name,
+                                  onChanged: (country) {
+                                    if (country == null) return;
 
-                                      setState(() {
-                                        selectedCountry = country;
-                                        widget.control.controlLocation =
-                                            country.name;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              _label('Aircraft'),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreDropdown<int>(
-                                    label: 'Number',
-                                    value: widget.control.aircraftNumber == 0
-                                        ? null
-                                        : widget.control.aircraftNumber,
-                                    items: const [
-                                      1,
-                                      2,
-                                      3,
-                                      4,
-                                      5,
-                                      6,
-                                      7,
-                                      8,
-                                      9,
-                                      10,
-                                    ],
-                                    itemLabel: (v) => v.toString(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.aircraftNumber =
-                                            value ?? 1;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreTextField(
-                                    label: 'Platform',
-                                    initialValue: widget.control.aircraftType,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.aircraftType = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'FW',
-                                    value: widget.control.fwAircraft,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.fwAircraft = true;
-                                          widget.control.rwAircraft = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'RW',
-                                    value: widget.control.rwAircraft,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.rwAircraft = true;
-                                          widget.control.fwAircraft = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              _label('Ordnance'),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreDropdown<int>(
-                                    label: 'Number',
-                                    value: widget.control.ordnanceNumber == 0
-                                        ? null
-                                        : widget.control.ordnanceNumber,
-                                    items: const [
-                                      1,
-                                      2,
-                                      3,
-                                      4,
-                                      5,
-                                      6,
-                                      7,
-                                      8,
-                                      9,
-                                      10,
-                                    ],
-                                    itemLabel: (v) => v.toString(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.ordnanceNumber =
-                                            value ?? 1;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreTextField(
-                                    label: 'Ordnance',
-                                    initialValue: widget.control.ordnanceType,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.ordnanceType = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              _label('Environment'),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreCheckbox(
-                                    label: 'Sim',
-                                    value:
-                                        widget.control.environment ==
-                                        'Simulated',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.environment =
-                                              'Simulated';
-                                          widget.control.live = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Dry',
-                                    value: widget.control.environment == 'Dry',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.environment = 'Dry';
-                                          widget.control.live = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Hot',
-                                    value: widget.control.environment == 'Hot',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.environment = 'Hot';
-                                          widget.control.live = true;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Ops',
-                                    value:
-                                        widget.control.environment ==
-                                        'Operational',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.environment =
-                                              'Operational';
-                                          widget.control.live = false;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                    setState(() {
+                                      selectedCountry = country;
+                                      widget.control.controlLocation =
+                                          country.name;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            _label('Aircraft'),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreDropdown<int>(
+                                  label: 'Number',
+                                  value: widget.control.aircraftNumber == 0
+                                      ? null
+                                      : widget.control.aircraftNumber,
+                                  items: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                  itemLabel: (v) => v.toString(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.aircraftNumber =
+                                          value ?? 1;
+                                    });
+                                  },
+                                ),
+                                ClaymoreTextField(
+                                  label: 'Platform',
+                                  initialValue: widget.control.aircraftType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.aircraftType = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'FW',
+                                  value: widget.control.fwAircraft,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.fwAircraft = true;
+                                        widget.control.rwAircraft = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'RW',
+                                  value: widget.control.rwAircraft,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.rwAircraft = true;
+                                        widget.control.fwAircraft = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            _label('Ordnance'),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreDropdown<int>(
+                                  label: 'Number',
+                                  value: widget.control.ordnanceNumber == 0
+                                      ? null
+                                      : widget.control.ordnanceNumber,
+                                  items: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                  itemLabel: (v) => v.toString(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.ordnanceNumber =
+                                          value ?? 1;
+                                    });
+                                  },
+                                ),
+                                ClaymoreTextField(
+                                  label: 'Ordnance',
+                                  initialValue: widget.control.ordnanceType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.ordnanceType = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            _label('Environment'),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreCheckbox(
+                                  label: 'Sim',
+                                  value:
+                                      widget.control.environment == 'Simulated',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.environment =
+                                            'Simulated';
+                                        widget.control.live = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Dry',
+                                  value: widget.control.environment == 'Dry',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.environment = 'Dry';
+                                        widget.control.live = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Hot',
+                                  value: widget.control.environment == 'Hot',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.environment = 'Hot';
+                                        widget.control.live = true;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Ops',
+                                  value:
+                                      widget.control.environment ==
+                                      'Operational',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.environment =
+                                            'Operational';
+                                        widget.control.live = false;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        _section(
-                          title: 'Control Elements',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _label('Gameplan'),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreCheckbox(
-                                    label: 'T1',
-                                    value: widget.control.typeofControl == 1,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.typeofControl = 1;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'T2',
-                                    value: widget.control.typeofControl == 2,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.typeofControl = 2;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'T3',
-                                    value: widget.control.typeofControl == 3,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.typeofControl = 3;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'BoT',
-                                    value:
-                                        widget.control.methodOfAttack == 'BoT',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.methodOfAttack = 'BoT';
-                                        }
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'BoC',
-                                    value:
-                                        widget.control.methodOfAttack == 'BoC',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          widget.control.methodOfAttack = 'BoC';
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              _label('Currency elements'),
-                              _fieldWrap(
-                                children: [
-                                  ClaymoreCheckbox(
-                                    label: 'LASER',
-                                    value: widget.control.laserMark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.laserMark = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'IR',
-                                    value: widget.control.irMark,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.irMark = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'JFO',
-                                    value: widget.control.remoteObserver,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.remoteObserver = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'FMV',
-                                    value: widget.control.fmv,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.fmv = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Low',
-                                    value: widget.control.lowLevel,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.lowLevel = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'NP',
-                                    value: widget.control.nonPermissive,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.nonPermissive = value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Day',
-                                    value: widget.control.day,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.day = value;
-                                        widget.control.night = !value;
-                                      });
-                                    },
-                                  ),
-                                  ClaymoreCheckbox(
-                                    label: 'Night',
-                                    value: widget.control.night,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        widget.control.day = !value;
-                                        widget.control.night = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      ),
+                      _section(
+                        title: 'Control Elements',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _label('Gameplan'),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreCheckbox(
+                                  label: 'T1',
+                                  value: widget.control.typeofControl == 1,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.typeofControl = 1;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'T2',
+                                  value: widget.control.typeofControl == 2,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.typeofControl = 2;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'T3',
+                                  value: widget.control.typeofControl == 3,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.typeofControl = 3;
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'BoT',
+                                  value: widget.control.methodOfAttack == 'BoT',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.methodOfAttack = 'BoT';
+                                      }
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'BoC',
+                                  value: widget.control.methodOfAttack == 'BoC',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        widget.control.methodOfAttack = 'BoC';
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 14),
+                            _label('Currency elements'),
+                            _fieldWrap(
+                              children: [
+                                ClaymoreCheckbox(
+                                  label: 'LASER',
+                                  value: widget.control.laserMark,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.laserMark = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'IR',
+                                  value: widget.control.irMark,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.irMark = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'JFO',
+                                  value: widget.control.remoteObserver,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.remoteObserver = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'FMV',
+                                  value: widget.control.fmv,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.fmv = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Low',
+                                  value: widget.control.lowLevel,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.lowLevel = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'NP',
+                                  value: widget.control.nonPermissive,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.nonPermissive = value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Day',
+                                  value: widget.control.day,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.day = value;
+                                      widget.control.night = !value;
+                                    });
+                                  },
+                                ),
+                                ClaymoreCheckbox(
+                                  label: 'Night',
+                                  value: widget.control.night,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.day = !value;
+                                      widget.control.night = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        _section(
-                          title: 'Authorisation / Remarks',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _fieldWrap(
-                                children: [
+                      ),
+                      _section(
+                        title: 'Authorisation / Remarks',
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _fieldWrap(
+                              children: [
+                                if (!widget.control.approved)
                                   ClaymoreDropdown<User>(
                                     label: 'Supervised By',
-                                    value: widget.control.supervisedById == ''
-                                        ? null
-                                        : appData.users.firstWhere(
+                                    value: appData.users.firstWhereOrNull(
                                             (user) =>
                                                 user.id ==
                                                 widget.control.supervisedById,
                                           ),
-                                    items: appData.users
-                                        .where(
-                                          (user) => [
-                                            'JTAC-I',
-                                            'JTAC-E',
-                                          ].contains(user.qualification) && user.id != appData.currentUser.id,
-                                        )
-                                        .toList(),
+                                    items: widget.readOnly
+                                        ? appData.users
+                                              .where(
+                                                (user) => [
+                                                  'JTAC-I',
+                                                  'JTAC-E',
+                                                ].contains(user.qualification),
+                                              )
+                                              .toList()
+                                        : appData.users
+                                              .where(
+                                                (user) =>
+                                                    [
+                                                      'JTAC-I',
+                                                      'JTAC-E',
+                                                    ].contains(
+                                                      user.qualification,
+                                                    ) &&
+                                                    user.id !=
+                                                        appData.currentUser.id,
+                                              )
+                                              .toList(),
                                     itemLabel: (user) =>
                                         '${user.rank} ${user.firstName[0]} ${user.lastName} ${user.qualification}',
                                     onChanged: (user) {
@@ -470,51 +457,52 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                       });
                                     },
                                   ),
-                                  if (appData.currentUser.qualification !=
-                                      'JTAC-C' && widget.control.supervisedById == '')
-                                    ClaymoreCheckbox(
-                                      label: 'Self-Authorised',
-                                      value: widget.control.approved,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          widget.control.approved = value;
-                                          if (value) widget.control.supervisedById = '';
-                                        });
-                                      },
-                                    ),
+                                if (appData.currentUser.qualification !=
+                                    'JTAC-C')
                                   ClaymoreCheckbox(
-                                    label: 'Successful',
-                                    value: widget.control.grading,
+                                    label: 'Self-Authorised',
+                                    value: widget.control.approved,
                                     onChanged: (value) {
                                       setState(() {
-                                        widget.control.grading = value;
+                                        widget.control.approved = value;
+                                        if (value) {
+                                          widget.control.supervisedById = '';
+                                        }
                                       });
                                     },
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              ClaymoreTextField(
-                                label: 'Remarks',
-                                initialValue: widget.control.remarks,
-                                maxLines: 5,
-                                onChanged: (value) {
-                                  widget.control.remarks = value;
-                                },
-                              ),
-                            ],
-                          ),
+                                ClaymoreCheckbox(
+                                  label: 'Successful',
+                                  value: widget.control.grading,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.control.grading = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            ClaymoreTextField(
+                              label: 'Remarks',
+                              initialValue: widget.control.remarks,
+                              maxLines: 5,
+                              onChanged: (value) {
+                                widget.control.remarks = value;
+                              },
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+            ),
 
-              const SizedBox(height: 16),
-              _actionBar(appData: appData, isEditing: isEditing),
-            ],
-          ),
+            const SizedBox(height: 16),
+            _actionBar(appData: appData, isEditing: isEditing),
+          ],
         ),
       ),
     );
@@ -605,7 +593,14 @@ class _AddControlDialogState extends State<AddControlDialog> {
         if (isEditing && !widget.readOnly)
           ClaymoreButton(
             onPressed: () async {
-
+              if (checkFields().isNotEmpty) {
+                showMessageDialog(
+                  context,
+                  title: 'Error',
+                  message: checkFields().join('\n'),
+                );
+                return;
+              }
               try {
                 await FirestoreService.update(
                   collectionPath: 'controls',
@@ -657,10 +652,9 @@ class _AddControlDialogState extends State<AddControlDialog> {
         'You must specify if this control was conducted at day or night',
       );
     }
-    if (widget.control.supervisedById == appData.currentUser.id &&
-        appData.currentUser.qualification == 'JTAC-C') {
+    if (widget.control.supervisedById == '' && !widget.control.approved) {
       errorMessage.add(
-        'You cannot self-authorise if you are not a minimum JTAC-Q',
+        'You must select supervising JTAC-I or for qualified JTACs, select self-authorised.',
       );
     }
 

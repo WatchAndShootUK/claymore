@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String id;
   final String serviceNumber;
@@ -7,6 +9,7 @@ class User {
   final String qualification;
   final String callsign;
   final String password;
+  Map<String, String> pccs;
 
   User({
     required this.id,
@@ -17,6 +20,7 @@ class User {
     required this.qualification,
     required this.callsign,
     required this.password,
+    required this.pccs,
   });
 
   factory User.empty() {
@@ -29,12 +33,13 @@ class User {
       qualification: '',
       callsign: '',
       password: '',
+      pccs: <String, String>{},
     );
   }
 
   String get getUserName =>
       '$rank ${firstName.isNotEmpty ? firstName[0] : ''} $lastName';
-      
+
   factory User.fromFirestore(String id, Map<String, dynamic> data) {
     return User(
       id: id,
@@ -45,6 +50,7 @@ class User {
       qualification: data['qualification'] ?? '',
       callsign: data['callsign'] ?? '',
       password: data['password'] ?? '',
+      pccs: _pccsFromFirestore(data['pccs']),
     );
   }
 
@@ -58,6 +64,13 @@ class User {
       'qualification': qualification,
       'callsign': callsign,
       'password': password,
+      'pccs': pccs,
     };
+  }
+
+  static Map<String, String> _pccsFromFirestore(dynamic value) {
+    if (value is! Map) return <String, String>{};
+
+    return value.map((key, val) => MapEntry(key.toString(), val.toString()));
   }
 }

@@ -61,6 +61,26 @@ class Currency {
       'Supervised': supervised,
     };
   }
+
+  bool get allTrue => [
+    t1,
+    t2,
+    t3,
+    bot,
+    boc,
+    fw,
+    rw,
+    laser,
+    ir,
+    ro,
+    vdl,
+    live,
+    np,
+    day,
+    night,
+    ll,
+    supervised,
+  ].every((b) => b);
 }
 
 class CurrencyCalculator {

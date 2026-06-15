@@ -40,8 +40,8 @@ class _ControlTileState extends State<ControlTile> {
       if (control.typeofControl == 1) data.add('T1');
       if (control.typeofControl == 2) data.add('T2');
       if (control.typeofControl == 3) data.add('T3');
-      if (control.methodOfAttack == 'BoC') data.add('BoT');
-      if (control.methodOfAttack == 'BoT') data.add('BoC');
+      if (control.methodOfAttack == 'BoT') data.add('BoT');
+      if (control.methodOfAttack == 'BoC') data.add('BoC');
       if (control.laserMark) data.add('Laser');
       if (control.irMark) data.add('IR');
       if (control.remoteObserver) data.add('JFO');
@@ -102,10 +102,7 @@ class _ControlTileState extends State<ControlTile> {
                       ),
                     ),
                     Text(
-                      control.controllingJTACId != appData.currentUser.id
-                          ? '${appData.users.firstWhere((u) => u.id == control.controllingJTACId).getUserName}: '
-                                '${getConstraints().join(', ')}'
-                          : getConstraints().join(', '),
+                      getConstraints().join(', '),
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: MediaQuery.of(context).size.width > 1000
@@ -137,10 +134,8 @@ class _ControlTileState extends State<ControlTile> {
                   ),
                   onTap: () => showDialog(
                     context: context,
-                    builder: (context) => AddControlDialog(
-                      control: control,
-                      readOnly: true
-                    ),
+                    builder: (context) =>
+                        AddControlDialog(control: control, readOnly: true),
                   ),
                 ),
               if (control.controllingJTACId == appData.currentUser.id)
@@ -154,8 +149,7 @@ class _ControlTileState extends State<ControlTile> {
                     ),
                   ),
                 ),
-              if (control.controllingJTACId != appData.currentUser.id &&
-                  !control.approved &&
+              if (!control.approved &&
                   [
                     'JTAC-I',
                     'JTAC-E',
@@ -175,12 +169,14 @@ class _ControlTileState extends State<ControlTile> {
                     }
                   },
                 ),
-              if (control.controllingJTACId == appData.currentUser.id)
+              if (control.controllingJTACId == appData.currentUser.id &&
+                  control.supervisedById == '')
                 GestureDetector(
                   child: const Icon(Icons.edit, color: Colors.white54),
                   onTap: () => showDialog(
                     context: context,
-                    builder: (context) => AddControlDialog(control: control,readOnly: false,),
+                    builder: (context) =>
+                        AddControlDialog(control: control, readOnly: false),
                   ),
                 ),
             ],

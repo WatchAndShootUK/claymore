@@ -196,7 +196,7 @@ Widget _splitLabelCell() {
             top: 4,
             left: 6,
             child: Text(
-              '6M',
+              '6',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 10,
@@ -208,7 +208,7 @@ Widget _splitLabelCell() {
             bottom: 4,
             right: 6,
             child: Text(
-              '12M',
+              '12',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 10,

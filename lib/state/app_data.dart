@@ -9,30 +9,36 @@ class AppData extends ChangeNotifier {
   List<User> users = [];
   List<Control> controls = [];
   User currentUser = User.empty();
+  User? _selectedJtac;
+
+  User? get selectedJtac => _selectedJtac;
+
+  set selectedJtac(User? user) {
+    _selectedJtac = user;
+    notifyListeners();
+  }
 
   StreamSubscription? _usersSub;
   StreamSubscription? _controlsSub;
 
   void startListening() {
-    _usersSub = FirestoreService.watchCollection(
-      collectionPath: 'users',
-    ).listen((data) {
-      users = data.map((map) {
-        return User.fromFirestore(map['id'], map);
-      }).toList();
+    _usersSub = FirestoreService.watchCollection(collectionPath: 'users')
+        .listen((data) {
+          users = data.map((map) {
+            return User.fromFirestore(map['id'], map);
+          }).toList();
 
-      notifyListeners();
-    });
+          notifyListeners();
+        });
 
-    _controlsSub = FirestoreService.watchCollection(
-      collectionPath: 'controls',
-    ).listen((data) {
-      controls = data.map((map) {
-        return Control.fromFirestore(map['id'], map);
-      }).toList();
+    _controlsSub = FirestoreService.watchCollection(collectionPath: 'controls')
+        .listen((data) {
+          controls = data.map((map) {
+            return Control.fromFirestore(map['id'], map);
+          }).toList();
 
-      notifyListeners();
-    });
+          notifyListeners();
+        });
   }
 
   @override
