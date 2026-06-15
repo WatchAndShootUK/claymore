@@ -68,7 +68,7 @@ class _ControlTileState extends State<ControlTile> {
         ),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: control.approved ? Colors.white10 : Colors.red,
+          color: control.approved ? Colors.white10 : Colors.yellow,
         ),
       ),
       child: InkWell(

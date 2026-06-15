@@ -62,7 +62,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
                     child: Column(
                       spacing: 16,
                       children: [
-                        SizedBox(height:0),
+                        SizedBox(height: 0),
                         _section(
                           title: 'About',
                           child: Column(
@@ -105,7 +105,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                     itemLabel: (country) => country.name,
                                     onChanged: (country) {
                                       if (country == null) return;
-                                    
+
                                       setState(() {
                                         selectedCountry = country;
                                         widget.control.controlLocation =
@@ -124,11 +124,23 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                     value: widget.control.aircraftNumber == 0
                                         ? null
                                         : widget.control.aircraftNumber,
-                                    items: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    items: const [
+                                      1,
+                                      2,
+                                      3,
+                                      4,
+                                      5,
+                                      6,
+                                      7,
+                                      8,
+                                      9,
+                                      10,
+                                    ],
                                     itemLabel: (v) => v.toString(),
                                     onChanged: (value) {
                                       setState(() {
-                                        widget.control.aircraftNumber = value ?? 1;
+                                        widget.control.aircraftNumber =
+                                            value ?? 1;
                                       });
                                     },
                                   ),
@@ -176,11 +188,23 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                     value: widget.control.ordnanceNumber == 0
                                         ? null
                                         : widget.control.ordnanceNumber,
-                                    items: const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    items: const [
+                                      1,
+                                      2,
+                                      3,
+                                      4,
+                                      5,
+                                      6,
+                                      7,
+                                      8,
+                                      9,
+                                      10,
+                                    ],
                                     itemLabel: (v) => v.toString(),
                                     onChanged: (value) {
                                       setState(() {
-                                        widget.control.ordnanceNumber = value ?? 1;
+                                        widget.control.ordnanceNumber =
+                                            value ?? 1;
                                       });
                                     },
                                   ),
@@ -202,11 +226,13 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   ClaymoreCheckbox(
                                     label: 'Sim',
                                     value:
-                                        widget.control.environment == 'Simulated',
+                                        widget.control.environment ==
+                                        'Simulated',
                                     onChanged: (value) {
                                       setState(() {
                                         if (value) {
-                                          widget.control.environment = 'Simulated';
+                                          widget.control.environment =
+                                              'Simulated';
                                           widget.control.live = false;
                                         }
                                       });
@@ -239,7 +265,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   ClaymoreCheckbox(
                                     label: 'Ops',
                                     value:
-                                        widget.control.environment == 'Operational',
+                                        widget.control.environment ==
+                                        'Operational',
                                     onChanged: (value) {
                                       setState(() {
                                         if (value) {
@@ -298,7 +325,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   ),
                                   ClaymoreCheckbox(
                                     label: 'BoT',
-                                    value: widget.control.methodOfAttack == 'BoT',
+                                    value:
+                                        widget.control.methodOfAttack == 'BoT',
                                     onChanged: (value) {
                                       setState(() {
                                         if (value) {
@@ -309,7 +337,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   ),
                                   ClaymoreCheckbox(
                                     label: 'BoC',
-                                    value: widget.control.methodOfAttack == 'BoC',
+                                    value:
+                                        widget.control.methodOfAttack == 'BoC',
                                     onChanged: (value) {
                                       setState(() {
                                         if (value) {
@@ -411,7 +440,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
                               _fieldWrap(
                                 children: [
                                   ClaymoreDropdown<User>(
-                                    label: 'Authorised By',
+                                    label: 'Supervised By',
                                     value: widget.control.supervisedById == ''
                                         ? null
                                         : appData.users.firstWhere(
@@ -424,22 +453,35 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                           (user) => [
                                             'JTAC-I',
                                             'JTAC-E',
-                                          ].contains(user.qualification),
+                                          ].contains(user.qualification) && user.id != appData.currentUser.id,
                                         )
                                         .toList(),
                                     itemLabel: (user) =>
                                         '${user.rank} ${user.firstName[0]} ${user.lastName} ${user.qualification}',
                                     onChanged: (user) {
                                       if (user == null) return;
-                                    
+
                                       setState(() {
                                         if (user.id != appData.currentUser.id) {
-                                          widget.control.supervisedById = user.id;
+                                          widget.control.supervisedById =
+                                              user.id;
                                         }
                                         widget.control.approved = false;
                                       });
                                     },
                                   ),
+                                  if (appData.currentUser.qualification !=
+                                      'JTAC-C' && widget.control.supervisedById == '')
+                                    ClaymoreCheckbox(
+                                      label: 'Self-Authorised',
+                                      value: widget.control.approved,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          widget.control.approved = value;
+                                          if (value) widget.control.supervisedById = '';
+                                        });
+                                      },
+                                    ),
                                   ClaymoreCheckbox(
                                     label: 'Successful',
                                     value: widget.control.grading,
@@ -524,7 +566,10 @@ class _AddControlDialogState extends State<AddControlDialog> {
                   },
             text: 'Delete',
           ),
-        ClaymoreButton(onPressed: () => Navigator.pop(context), text: widget.readOnly ? 'Back' : 'Cancel'),
+        ClaymoreButton(
+          onPressed: () => Navigator.pop(context),
+          text: widget.readOnly ? 'Back' : 'Cancel',
+        ),
         if (!isEditing && !widget.readOnly)
           ClaymoreButton(
             onPressed: () async {
@@ -535,11 +580,6 @@ class _AddControlDialogState extends State<AddControlDialog> {
                   message: checkFields().join('\n'),
                 );
                 return;
-              }
-
-              if (appData.currentUser.qualification != 'JTAC-C' &&
-                  widget.control.supervisedById == appData.currentUser.id) {
-                widget.control.approved = true;
               }
 
               try {
@@ -565,10 +605,6 @@ class _AddControlDialogState extends State<AddControlDialog> {
         if (isEditing && !widget.readOnly)
           ClaymoreButton(
             onPressed: () async {
-              if (appData.currentUser.qualification != 'JTAC-C' &&
-                  widget.control.supervisedById == appData.currentUser.id) {
-                widget.control.approved = true;
-              }
 
               try {
                 await FirestoreService.update(
