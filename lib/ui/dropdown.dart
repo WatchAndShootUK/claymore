@@ -54,7 +54,7 @@ class ClaymoreDropdown<T> extends StatelessWidget {
           value: item,
           child: Text(
             itemLabel(item),
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white, fontSize: 13 ),
           ),
         );
       }).toList(),

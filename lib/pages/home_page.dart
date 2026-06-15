@@ -54,12 +54,13 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 SizedBox(height: 12),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   spacing: 12.0,
                                   children: [
                                     SizedBox(width: 2),
-                                    SizedBox(
-                                      width: 250,
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: 200,
+                                      ),
                                       child: ClaymoreDropdown<User>(
                                         label: 'View controls for',
                                         value: appData.currentUser,
@@ -80,9 +81,7 @@ class _HomePageState extends State<HomePage> {
                                         },
                                       ),
                                     ),
-
                                     Spacer(),
-
                                     if (selectedJtac?.id !=
                                             appData.currentUser.id &&
                                         visibleControls.any(
@@ -163,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: MediaQuery.of(context).size.width > 600
+                                  child: MediaQuery.of(context).size.width > 700
                                       ? LargeCurrencyTable(
                                           user: selectedJtac as User,
                                         )
@@ -175,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        if (MediaQuery.of(context).size.width > 600)
+                        if (MediaQuery.of(context).size.width > 700)
                           RightHandPanel(),
                       ],
                     ),

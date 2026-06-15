@@ -1,5 +1,5 @@
-
 import 'package:claymore/pages/home_page.dart';
+import 'package:claymore/services/login_cache.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +13,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -72,7 +73,7 @@ class LoginPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.33,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (serviceNumberController.text.isEmpty ||
                               passwordController.text.isEmpty) {
                             showDialog(
@@ -103,11 +104,12 @@ class LoginPage extends StatelessWidget {
                           );
                           if (user != null) {
                             appData.currentUser = user;
+
+                            await LoginCache.saveUserId(user.id);
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    HomePage(),
+                                builder: (context) => HomePage(),
                               ),
                             );
                           } else {
@@ -129,7 +131,7 @@ class LoginPage extends StatelessWidget {
                               ),
                             );
                             serviceNumberController.clear();
-                            passwordController.clear(); 
+                            passwordController.clear();
                             return;
                           }
                         },

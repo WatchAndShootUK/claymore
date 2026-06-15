@@ -20,28 +20,31 @@ class ClaymoreButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 48,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
-          foregroundColor: textColor,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(color: Color(0xFF4A4A4A)),
+      width: MediaQuery.of(context).size.width < 700 ? icon == null ? 130 : 48 : 130,
+      child: Center(
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: backgroundColor,
+            foregroundColor: textColor,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+              side: const BorderSide(color: Color(0xFF4A4A4A)),
+            ),
           ),
+          child: MediaQuery.of(context).size.width > 700
+              ? Text(
+                  text,
+                  style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+                )
+              : icon != null
+              ? Center(child: Icon(icon, color: textColor, size: 18))
+              : Text(
+                  text,
+                  style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+                ),
         ),
-        child: MediaQuery.of(context).size.width > 600
-            ? Text(
-                text,
-                style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-              )
-            : icon != null
-            ? Icon(icon, color: textColor, size: 18)
-            : Text(
-                text,
-                style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-              ),
       ),
     );
   }
