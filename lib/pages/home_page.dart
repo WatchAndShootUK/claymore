@@ -58,7 +58,8 @@ class _HomePageState extends State<HomePage> {
                                   spacing: 12.0,
                                   children: [
                                     SizedBox(width: 2),
-                                    Flexible(
+                                    SizedBox(
+                                      width: 250,
                                       child: ClaymoreDropdown<User>(
                                         label: 'View controls for',
                                         value: appData.currentUser,
@@ -111,11 +112,13 @@ class _HomePageState extends State<HomePage> {
                                           }
                                         },
                                         text: "Approve All",
+                                        icon: Icons.check,
                                       ),
                                     if (appData.currentUser.id ==
                                         selectedJtac?.id)
                                       ClaymoreButton(
                                         text: 'Add Control',
+                                        icon: Icons.add,
                                         onPressed: () => showDialog(
                                           context: context,
                                           builder: (context) =>
@@ -160,9 +163,13 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: CurrencyTable(
-                                    user: selectedJtac as User,
-                                  ),
+                                  child: MediaQuery.of(context).size.width > 600
+                                      ? LargeCurrencyTable(
+                                          user: selectedJtac as User,
+                                        )
+                                      : SmallCurrencyTable(
+                                          user: selectedJtac as User,
+                                        ),
                                 ),
                               ],
                             ),

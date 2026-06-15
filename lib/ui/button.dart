@@ -28,36 +28,19 @@ class ClaymoreButton extends StatelessWidget {
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(
-              color: Color(0xFF4A4A4A),
-            ),
+            side: const BorderSide(color: Color(0xFF4A4A4A)),
           ),
         ),
-        child: icon == null
+        child: MediaQuery.of(context).size.width > 600
             ? Text(
                 text,
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
               )
-            : Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    icon,
-                    color: textColor,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    text,
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+            : icon != null
+            ? Icon(icon, color: textColor, size: 18)
+            : Text(
+                text,
+                style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
               ),
       ),
     );
