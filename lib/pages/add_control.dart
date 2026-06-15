@@ -33,7 +33,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
 
     return Dialog(
       backgroundColor: Colors.grey.shade900,
-      insetPadding: EdgeInsets.all(24),
+      insetPadding: _isMobile ? EdgeInsets.all(12) : EdgeInsets.all(24),
       child: SizedBox(
         child: Padding(
           padding: const EdgeInsets.all(16),

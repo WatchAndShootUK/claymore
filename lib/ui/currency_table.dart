@@ -95,21 +95,6 @@ class LargeCurrencyTable extends StatelessWidget {
     );
   }
 
-  Widget _rowLabel(String text) {
-    return Container(
-      height: 40,
-      alignment: Alignment.center,
-      color: Colors.grey.shade900,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 11,
-        ),
-      ),
-    );
-  }
 
   Widget _splitLabelCell() {
     return SizedBox(

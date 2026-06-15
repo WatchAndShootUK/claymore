@@ -1,5 +1,7 @@
+import 'package:claymore/models/user.dart';
 import 'package:claymore/pages/home_page.dart';
 import 'package:claymore/pages/login_page.dart';
+import 'package:claymore/services/firestore_service.dart';
 import 'package:claymore/services/login_cache.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:collection/collection.dart';
@@ -17,6 +19,7 @@ void main() async {
   appData.startListening();
 
   runApp(ChangeNotifierProvider.value(value: appData, child: const MainApp()));
+
 }
 
 class MainApp extends StatefulWidget {
@@ -33,7 +36,6 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     final appData = context.watch<AppData>();
-
     if (appData.users.isEmpty) {
       return _material(
         const Scaffold(

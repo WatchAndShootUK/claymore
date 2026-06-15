@@ -35,14 +35,6 @@ class AppData extends ChangeNotifier {
     });
   }
 
-  User? getUserById(String id) {
-    try {
-      return users.firstWhere((user) => user.id == id);
-    } catch (_) {
-      return null;
-    }
-  }
-
   @override
   void dispose() {
     _usersSub?.cancel();

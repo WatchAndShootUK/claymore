@@ -3,7 +3,6 @@ import 'package:claymore/pages/add_control.dart';
 import 'package:claymore/services/firestore_service.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:claymore/ui/dialogs.dart';
-import 'package:claymore/ui/label.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -43,14 +42,14 @@ class _ControlTileState extends State<ControlTile> {
       if (control.typeofControl == 3) data.add('T3');
       if (control.methodOfAttack == 'BoC') data.add('BoT');
       if (control.methodOfAttack == 'BoT') data.add('BoC');
-      if (control.laserMark) data.add('LSR');
+      if (control.laserMark) data.add('Laser');
       if (control.irMark) data.add('IR');
-      if (control.remoteObserver) data.add('RO');
+      if (control.remoteObserver) data.add('JFO');
       if (control.fmv) data.add('VDL');
-      if (control.live) data.add('HOT');
+      if (control.live) data.add('Hot');
       if (control.nonPermissive) data.add('NP');
-      if (control.day) data.add('DAY');
-      if (control.night) data.add('NIGHT');
+      if (control.day) data.add('Day');
+      if (control.night) data.add('Night');
       if (control.lowLevel) data.add('LL');
       if (control.supervisedById != appData.currentUser.id &&
           control.supervisedById != '') {

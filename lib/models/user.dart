@@ -37,7 +37,7 @@ class User {
       
   factory User.fromFirestore(String id, Map<String, dynamic> data) {
     return User(
-      id: data['id'] ?? '',
+      id: id,
       serviceNumber: data['serviceNumber'] ?? '',
       rank: data['rank'] ?? '',
       firstName: data['firstName'] ?? '',

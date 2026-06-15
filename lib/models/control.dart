@@ -1,3 +1,4 @@
+import 'package:claymore/models/countries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Control {
@@ -71,7 +72,7 @@ class Control {
       createdAt: DateTime.now(),
       controlDate: DateTime.now(),
       operationName: '',
-      controlLocation: '',
+      controlLocation: countryLocations.first.name,
       aircraftNumber: 1,
       aircraftType: '',
       ordnanceNumber: 1,
