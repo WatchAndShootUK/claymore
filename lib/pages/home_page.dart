@@ -134,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
 
                                 SizedBox(height: 12),
+                                Container(height: 1,color: Colors.grey,),
                                 Expanded(
                                   child: Container(
                                     padding: EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -160,6 +161,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
+                                Container(height: 1,color: Colors.grey,),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: MediaQuery.of(context).size.width > 700

@@ -106,6 +106,7 @@ class LoginPage extends StatelessWidget {
                             appData.currentUser = user;
 
                             await LoginCache.saveUserId(user.id);
+                            
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

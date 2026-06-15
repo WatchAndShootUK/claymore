@@ -117,18 +117,18 @@ class _ControlTileState extends State<ControlTile> {
                   ],
                 ),
               ),
-
-              GestureDetector(
-                child: const Icon(Icons.delete, color: Colors.red),
-                onTap: () async {
-                  if (await showDeleteDialog(context)) {
-                    await FirestoreService.delete(
-                      collectionPath: 'controls',
-                      docId: control.id,
-                    );
-                  }
-                },
-              ),
+              if (control.controllingJTACId == appData.currentUser.id)
+                GestureDetector(
+                  child: const Icon(Icons.delete, color: Colors.red),
+                  onTap: () async {
+                    if (await showDeleteDialog(context)) {
+                      await FirestoreService.delete(
+                        collectionPath: 'controls',
+                        docId: control.id,
+                      );
+                    }
+                  },
+                ),
               if (control.controllingJTACId == appData.currentUser.id)
                 GestureDetector(
                   child: const Icon(Icons.copy, color: Colors.white54),

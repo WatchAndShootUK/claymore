@@ -20,6 +20,7 @@ void main() async {
 
   runApp(ChangeNotifierProvider.value(value: appData, child: const MainApp()));
 
+  
 }
 
 class MainApp extends StatefulWidget {

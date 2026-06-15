@@ -78,81 +78,6 @@ class LargeCurrencyTable extends StatelessWidget {
       ),
     );
   }
-
-  Widget _headerCell(String text) {
-    return Container(
-      height: 40,
-      alignment: Alignment.center,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
-        ),
-      ),
-    );
-  }
-
-
-  Widget _splitLabelCell() {
-    return SizedBox(
-      height: 40,
-      child: CustomPaint(
-        painter: _DiagonalCurrencyPainter(
-          topLeftColor: Colors.grey.shade700,
-          bottomRightColor: Colors.grey.shade900,
-          lineColor: Colors.white24,
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 4,
-              left: 6,
-              child: Text(
-                '6M',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 4,
-              right: 6,
-              child: Text(
-                '12M',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _splitCurrencyCell(bool sixMonthValue, bool twelveMonthValue) {
-    return SizedBox(
-      height: 40,
-      child: CustomPaint(
-        painter: _DiagonalCurrencyPainter(
-          topLeftColor: sixMonthValue
-              ? Colors.green.shade700
-              : Colors.red.shade500,
-          bottomRightColor: twelveMonthValue
-              ? Colors.green.shade700
-              : Colors.red.shade500,
-          lineColor: Colors.white24,
-        ),
-      ),
-    );
-  }
 }
 
 class SmallCurrencyTable extends StatelessWidget {
@@ -238,96 +163,80 @@ class SmallCurrencyTable extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _headerCell(String text) {
-    return Container(
-      height: 40,
-      alignment: Alignment.center,
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 12,
-        ),
+Widget _headerCell(String text) {
+  return Container(
+    height: 40,
+    alignment: Alignment.center,
+    child: Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 12,
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _rowLabel(String text) {
-    return Container(
-      height: 40,
-      alignment: Alignment.center,
-      color: Colors.grey.shade900,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 11,
-        ),
+Widget _splitLabelCell() {
+  return SizedBox(
+    height: 40,
+    child: CustomPaint(
+      painter: _DiagonalCurrencyPainter(
+        topLeftColor: Colors.grey.shade700,
+        bottomRightColor: Colors.grey.shade900,
+        lineColor: Colors.white24,
       ),
-    );
-  }
-
-  Widget _splitLabelCell() {
-    return SizedBox(
-      height: 40,
-      child: CustomPaint(
-        painter: _DiagonalCurrencyPainter(
-          topLeftColor: Colors.grey.shade700,
-          bottomRightColor: Colors.grey.shade900,
-          lineColor: Colors.white24,
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 4,
-              left: 6,
-              child: Text(
-                '6M',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 4,
+            left: 6,
+            child: Text(
+              '6M',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Positioned(
-              bottom: 4,
-              right: 6,
-              child: Text(
-                '12M',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
+          ),
+          Positioned(
+            bottom: 4,
+            right: 6,
+            child: Text(
+              '12M',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _splitCurrencyCell(bool sixMonthValue, bool twelveMonthValue) {
-    return SizedBox(
-      height: 40,
-      child: CustomPaint(
-        painter: _DiagonalCurrencyPainter(
-          topLeftColor: sixMonthValue
-              ? Colors.green.shade700
-              : Colors.red.shade500,
-          bottomRightColor: twelveMonthValue
-              ? Colors.green.shade700
-              : Colors.red.shade500,
-          lineColor: Colors.white24,
-        ),
+Widget _splitCurrencyCell(bool sixMonthValue, bool twelveMonthValue) {
+  return SizedBox(
+    height: 40,
+    child: CustomPaint(
+      painter: _DiagonalCurrencyPainter(
+        topLeftColor: sixMonthValue
+            ? Colors.green.shade800
+            : Colors.red.shade700,
+        bottomRightColor: twelveMonthValue
+            ? Colors.green.shade900
+            : Colors.red.shade900,
+        lineColor: Colors.white24,
       ),
-    );
-  }
+    ),
+  );
 }
 
 class _DiagonalCurrencyPainter extends CustomPainter {

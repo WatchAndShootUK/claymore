@@ -427,7 +427,9 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                     if (user == null) return;
 
                                     setState(() {
-                                      widget.control.supervisedById = user.id;
+                                      if (user.id != appData.currentUser.id) {
+                                        widget.control.supervisedById = user.id;
+                                      }
                                       widget.control.approved = false;
                                     });
                                   },
