@@ -138,7 +138,8 @@ class _ControlTileState extends State<ControlTile> {
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) => AddControlDialog(
-                      control: control.deepCopy(appData.currentUser.id),
+                      control: control,
+                      readOnly: true
                     ),
                   ),
                 ),
@@ -149,6 +150,7 @@ class _ControlTileState extends State<ControlTile> {
                     context: context,
                     builder: (context) => AddControlDialog(
                       control: control.deepCopy(appData.currentUser.id),
+                      readOnly: false,
                     ),
                   ),
                 ),
@@ -178,7 +180,7 @@ class _ControlTileState extends State<ControlTile> {
                   child: const Icon(Icons.edit, color: Colors.white54),
                   onTap: () => showDialog(
                     context: context,
-                    builder: (context) => AddControlDialog(control: control),
+                    builder: (context) => AddControlDialog(control: control,readOnly: false,),
                   ),
                 ),
             ],

@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                           flex: 3,
                           child: Container(
                             width: double.infinity,
-                            margin: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                            margin: const EdgeInsets.all(12),
                             color: Colors.grey.shade800,
                             child: Column(
                               children: [
@@ -125,6 +125,7 @@ class _HomePageState extends State<HomePage> {
                                                 control: Control.empty(
                                                   appData.currentUser.id,
                                                 ),
+                                                readOnly: false,
                                               ),
                                         ),
                                       ),
