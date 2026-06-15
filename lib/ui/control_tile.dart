@@ -129,6 +129,19 @@ class _ControlTileState extends State<ControlTile> {
                     }
                   },
                 ),
+              if (control.controllingJTACId != appData.currentUser.id)
+                GestureDetector(
+                  child: const Icon(
+                    Icons.remove_red_eye,
+                    color: Colors.white54,
+                  ),
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => AddControlDialog(
+                      control: control.deepCopy(appData.currentUser.id),
+                    ),
+                  ),
+                ),
               if (control.controllingJTACId == appData.currentUser.id)
                 GestureDetector(
                   child: const Icon(Icons.copy, color: Colors.white54),
