@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        if (MediaQuery.of(context).size.width > 700)
+                        if (MediaQuery.of(context).size.width > 1000)
                           RightHandPanel(),
                       ],
                     ),

@@ -18,33 +18,45 @@ class ClaymoreButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final compact = MediaQuery.of(context).size.width < 700;
+
     return SizedBox(
       height: 48,
-      width: MediaQuery.of(context).size.width < 700 ? icon == null ? 130 : 48 : 130,
-      child: Center(
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor,
-            foregroundColor: textColor,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(color: Color(0xFF4A4A4A)),
+      width: compact
+          ? (icon == null ? 130 : 48)
+          : 130,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          backgroundColor: backgroundColor,
+          foregroundColor: textColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(
+              color: Color(0xFF4A4A4A),
             ),
           ),
-          child: MediaQuery.of(context).size.width > 700
-              ? Text(
-                  text,
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-                )
-              : icon != null
-              ? Center(child: Icon(icon, color: textColor, size: 18))
-              : Text(
-                  text,
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-                ),
         ),
+        child: compact && icon != null
+            ? SizedBox.expand(
+                child: Center(
+                  child: Icon(
+                    icon,
+                    color: textColor,
+                    size: 18,
+                  ),
+                ),
+              )
+            : Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
       ),
     );
   }

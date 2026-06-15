@@ -94,17 +94,26 @@ class _ControlTileState extends State<ControlTile> {
                   children: [
                     Text(
                       '${control.controlDate.day}/${control.controlDate.month}/${control.controlDate.year}: ${control.operationName == '' ? 'Unknown' : control.operationName} - ${control.controlLocation == '' ? 'Planet Earth' : control.controlLocation}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: MediaQuery.of(context).size.width > 1000
+                            ? 16
+                            : 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    ClaymoreLabel(
+                    Text(
                       control.controllingJTACId != appData.currentUser.id
                           ? '${appData.users.firstWhere((u) => u.id == control.controllingJTACId).getUserName}: '
                                 '${getConstraints().join(', ')}'
                           : getConstraints().join(', '),
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: MediaQuery.of(context).size.width > 1000
+                            ? 14
+                            : 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),

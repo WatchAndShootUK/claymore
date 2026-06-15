@@ -88,7 +88,7 @@ class Control {
       lowLevel: false,
       day: false,
       night: false,
-      supervisedById: currentUserID,
+      supervisedById: '',
       controllingJTACId: currentUserID,
       fwAircraft: false,
       rwAircraft: false,

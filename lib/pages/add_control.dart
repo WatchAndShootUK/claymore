@@ -15,10 +15,7 @@ import 'package:provider/provider.dart';
 class AddControlDialog extends StatefulWidget {
   final Control control;
 
-  const AddControlDialog({
-    super.key,
-    required this.control,
-  });
+  const AddControlDialog({super.key, required this.control});
 
   @override
   State<AddControlDialog> createState() => _AddControlDialogState();
@@ -36,14 +33,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
 
     return Dialog(
       backgroundColor: Colors.grey.shade900,
-      insetPadding: EdgeInsets.all(_isMobile ? 0 : 24),
+      insetPadding: EdgeInsets.all(24),
       child: SizedBox(
-        width: _isMobile
-            ? MediaQuery.of(context).size.width
-            : MediaQuery.of(context).size.width * 0.8,
-        height: _isMobile
-            ? MediaQuery.of(context).size.height
-            : MediaQuery.of(context).size.height * 0.9,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -59,9 +50,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
               const SizedBox(height: 16),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Wrap(
+                  child: Column(
                     spacing: 16,
-                    runSpacing: 16,
                     children: [
                       _section(
                         title: 'About',
@@ -91,19 +81,29 @@ class _AddControlDialogState extends State<AddControlDialog> {
                               ],
                             ),
                             const SizedBox(height: 10),
-                            ClaymoreDropdown<CountryLocation>(
-                              label: 'Location',
-                              value: selectedCountry,
-                              items: countryLocations,
-                              itemLabel: (country) => country.name,
-                              onChanged: (country) {
-                                if (country == null) return;
+                            _fieldWrap(
+                              children: [
+                                ClaymoreDropdown<CountryLocation>(
+                                  label: 'Location',
+                                  value: countryLocations.firstWhere(
+                                    (country) =>
+                                        country.name ==
+                                        widget.control.controlLocation,
+                                    orElse: () => countryLocations.first,
+                                  ),
+                                  items: countryLocations,
+                                  itemLabel: (country) => country.name,
+                                  onChanged: (country) {
+                                    if (country == null) return;
 
-                                setState(() {
-                                  selectedCountry = country;
-                                  widget.control.controlLocation = country.name;
-                                });
-                              },
+                                    setState(() {
+                                      selectedCountry = country;
+                                      widget.control.controlLocation =
+                                          country.name;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 14),
                             _label('Aircraft'),
@@ -118,7 +118,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   itemLabel: (v) => v.toString(),
                                   onChanged: (value) {
                                     setState(() {
-                                      widget.control.aircraftNumber = value ?? 1;
+                                      widget.control.aircraftNumber =
+                                          value ?? 1;
                                     });
                                   },
                                 ),
@@ -192,8 +193,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                               children: [
                                 ClaymoreCheckbox(
                                   label: 'Sim',
-                                  value: widget.control.environment ==
-                                      'Simulated',
+                                  value:
+                                      widget.control.environment == 'Simulated',
                                   onChanged: (value) {
                                     setState(() {
                                       if (value) {
@@ -230,7 +231,8 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                 ),
                                 ClaymoreCheckbox(
                                   label: 'Ops',
-                                  value: widget.control.environment ==
+                                  value:
+                                      widget.control.environment ==
                                       'Operational',
                                   onChanged: (value) {
                                     setState(() {
@@ -290,8 +292,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                 ),
                                 ClaymoreCheckbox(
                                   label: 'BoT',
-                                  value:
-                                      widget.control.methodOfAttack == 'BoT',
+                                  value: widget.control.methodOfAttack == 'BoT',
                                   onChanged: (value) {
                                     setState(() {
                                       if (value) {
@@ -302,8 +303,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                 ),
                                 ClaymoreCheckbox(
                                   label: 'BoC',
-                                  value:
-                                      widget.control.methodOfAttack == 'BoC',
+                                  value: widget.control.methodOfAttack == 'BoC',
                                   onChanged: (value) {
                                     setState(() {
                                       if (value) {
@@ -406,12 +406,21 @@ class _AddControlDialogState extends State<AddControlDialog> {
                               children: [
                                 ClaymoreDropdown<User>(
                                   label: 'Authorised By',
-                                  value: appData.users.firstWhere(
-                                    (u) =>
-                                        u.id == widget.control.supervisedById,
-                                    orElse: () => appData.currentUser,
-                                  ),
-                                  items: appData.users,
+                                  value: widget.control.supervisedById == ''
+                                      ? null
+                                      : appData.users.firstWhere(
+                                          (user) =>
+                                              user.id ==
+                                              widget.control.supervisedById,
+                                        ),
+                                  items: appData.users
+                                      .where(
+                                        (user) => [
+                                          'JTAC-I',
+                                          'JTAC-E',
+                                        ].contains(user.qualification),
+                                      )
+                                      .toList(),
                                   itemLabel: (user) =>
                                       '${user.rank} ${user.firstName[0]} ${user.lastName} ${user.qualification}',
                                   onChanged: (user) {
@@ -459,28 +468,20 @@ class _AddControlDialogState extends State<AddControlDialog> {
     );
   }
 
-  Widget _fieldWrap({
-    required List<Widget> children,
-  }) {
+  Widget _fieldWrap({required List<Widget> children}) {
     final width = MediaQuery.of(context).size.width;
-    final itemWidth = width < 600 ? width - 64 : 220.0;
+    final itemWidth = width < 700 ? width - 64 : 220.0;
 
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: children.map((child) {
-        return SizedBox(
-          width: itemWidth,
-          child: child,
-        );
+        return SizedBox(width: itemWidth, child: child);
       }).toList(),
     );
   }
 
-  Widget _actionBar({
-    required AppData appData,
-    required bool isEditing,
-  }) {
+  Widget _actionBar({required AppData appData, required bool isEditing}) {
     return Wrap(
       alignment: WrapAlignment.end,
       spacing: 12,
@@ -507,18 +508,13 @@ class _AddControlDialogState extends State<AddControlDialog> {
                       if (!context.mounted) return;
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to delete control: $e'),
-                        ),
+                        SnackBar(content: Text('Failed to delete control: $e')),
                       );
                     }
                   },
             text: 'Delete',
           ),
-        ClaymoreButton(
-          onPressed: () => Navigator.pop(context),
-          text: 'Cancel',
-        ),
+        ClaymoreButton(onPressed: () => Navigator.pop(context), text: 'Cancel'),
         if (!isEditing)
           ClaymoreButton(
             onPressed: () async {
@@ -625,10 +621,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
     return errorMessage;
   }
 
-  Widget _section({
-    required String title,
-    required Widget child,
-  }) {
+  Widget _section({required String title, required Widget child}) {
     return Container(
       width: _isMobile ? MediaQuery.of(context).size.width - 32 : 520,
       padding: const EdgeInsets.all(14),
