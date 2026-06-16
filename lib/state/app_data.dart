@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:claymore/models/control.dart';
+import 'package:claymore/models/trg_event.dart';
 import 'package:claymore/models/user.dart';
 import 'package:claymore/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 class AppData extends ChangeNotifier {
   List<User> users = [];
   List<Control> controls = [];
+  List<TrgEvent> trgEvents = [];
   User currentUser = User.empty();
   User? _selectedJtac;
 
@@ -20,6 +22,7 @@ class AppData extends ChangeNotifier {
 
   StreamSubscription? _usersSub;
   StreamSubscription? _controlsSub;
+  StreamSubscription? _trgSub;
 
   void startListening() {
     _usersSub = FirestoreService.watchCollection(collectionPath: 'users')
@@ -35,7 +38,16 @@ class AppData extends ChangeNotifier {
         .listen((data) {
           controls = data.map((map) {
             return Control.fromFirestore(map['id'], map);
-          }).toList();
+          }).toList()..sort((a, b) => a.controlDate.compareTo(b.controlDate));
+          ;
+
+          notifyListeners();
+        });
+    _trgSub = FirestoreService.watchCollection(collectionPath: 'training')
+        .listen((data) {
+          trgEvents = data.map((map) {
+            return TrgEvent.fromFirestore(map['id'], map);
+          }).toList()..sort((a, b) => a.trgDate.compareTo(b.trgDate));
 
           notifyListeners();
         });
@@ -45,6 +57,7 @@ class AppData extends ChangeNotifier {
   void dispose() {
     _usersSub?.cancel();
     _controlsSub?.cancel();
+    _trgSub?.cancel();
     super.dispose();
   }
 }

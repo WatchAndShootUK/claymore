@@ -58,6 +58,7 @@ class _MainAppState extends State<MainApp> {
 
         if (user != null) {
           appData.currentUser = user;
+          appData.selectedJtac = user;
 
           if (!mounted) return;
           setState(() {

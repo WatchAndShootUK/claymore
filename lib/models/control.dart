@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Control {
   String id;
-  DateTime createdAt;
   String controllingJTACId;
 
   DateTime controlDate;
@@ -37,7 +36,6 @@ class Control {
 
   Control({
     required this.id,
-    required this.createdAt,
     required this.controlDate,
     required this.controlLocation,
     required this.operationName,
@@ -69,7 +67,6 @@ class Control {
   factory Control.empty(String currentUserID) {
     return Control(
       id: '',
-      createdAt: DateTime.now(),
       controlDate: DateTime.now(),
       operationName: '',
       controlLocation: countryLocations.first.name,
@@ -105,7 +102,6 @@ class Control {
     final copy = Control.fromFirestore('', data);
 
     copy.id = '';
-    copy.createdAt = DateTime.now();
     copy.controlDate = DateTime.now();
     copy.controllingJTACId = currentUserId;
     copy.supervisedById = '';
@@ -118,7 +114,6 @@ class Control {
     return Control(
       id: id,
       operationName: data['operationName'] ?? '',
-      createdAt: _dateFromAny(data['createdAt']),
       controlDate: _dateFromAny(data['controlDate']),
       controlLocation: data['controlLocation'] ?? '',
       aircraftNumber: data['aircraftNumber'] ?? 0,

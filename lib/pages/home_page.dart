@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   User? selectedJtac;
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 700;
+    final isMobile = MediaQuery.of(context).size.width < 900;
 
     if (isMobile) {
       return DefaultTabController(
@@ -34,14 +34,8 @@ class _HomePageState extends State<HomePage> {
                       child: TextButton(
                         onPressed: () =>
                             DefaultTabController.of(context).animateTo(0),
-                        child: const Text('Profile'),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () =>
-                            DefaultTabController.of(context).animateTo(0),
-                        child: const Text('Logbook'),
+                        child: const Text('Logbook',
+                          style: TextStyle(color: Colors.grey),),
                       ),
                     ),
 
@@ -58,14 +52,10 @@ class _HomePageState extends State<HomePage> {
                       child: TextButton(
                         onPressed: () =>
                             DefaultTabController.of(context).animateTo(1),
-                        child: const Text('Unit'),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () =>
-                            DefaultTabController.of(context).animateTo(0),
-                        child: const Text('Tools'),
+                        child: const Text(
+                          'Readiness',
+                          style: TextStyle(color: Colors.grey),
+                        ),
                       ),
                     ),
                   ],
@@ -74,7 +64,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           body: const TabBarView(
-            children: [IndividualPanel(), OrganisationPanel(), OrganisationPanel(), OrganisationPanel()],
+            children: [
+              IndividualPanel(),
+              OrganisationPanel(),
+              OrganisationPanel(),
+              OrganisationPanel(),
+            ],
           ),
         ),
       );

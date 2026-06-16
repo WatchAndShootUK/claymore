@@ -1,5 +1,6 @@
 import 'package:claymore/models/user.dart';
 import 'package:claymore/services/currency_calculator.dart';
+import 'package:claymore/services/pms_calculator.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -106,26 +107,53 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                               alignment: Alignment.centerLeft,
                               child: GestureDetector(
                                 onTap: () {
-                                    appData.selectedJtac = user;
+                                  appData.selectedJtac = user;
                                 },
                                 child: Text(
                                   user.getUserName,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
+                                  style: TextStyle(
+                                    color:
+                                        appData.selectedJtac?.getUserName ==
+                                            user.getUserName
+                                        ? Colors.white
+                                        : Colors.white70,
+                                    fontSize:
+                                        appData.selectedJtac?.getUserName ==
+                                            user.getUserName
+                                        ? 15
+                                        : 13,
+                                    fontWeight:
+                                        appData.selectedJtac?.getUserName ==
+                                            user.getUserName
+                                        ? FontWeight.bold
+                                        : FontWeight.w500,
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        statusCell(user.qualification != 'JTAC-C' ? true : false),
-                        statusCell(sixMonthCurrent),
-                        statusCell(twelveMonthCurrent),
-                        statusCell(false),
-                        statusCell(false),
+                        statusCell(
+                          user.qualification != 'JTAC-C' ? true : false,
+                          appData.selectedJtac?.getUserName == user.getUserName,
+                        ),
+                        statusCell(
+                          sixMonthCurrent,
+                          appData.selectedJtac?.getUserName == user.getUserName,
+                        ),
+                        statusCell(
+                          twelveMonthCurrent,
+                          appData.selectedJtac?.getUserName == user.getUserName,
+                        ),
+                        statusCell(
+                          pmsCurrent(user, appData.trgEvents),
+                          appData.selectedJtac?.getUserName == user.getUserName,
+                        ),
+                        statusCell(
+                          false,
+                          appData.selectedJtac?.getUserName == user.getUserName,
+                        ),
                       ],
                     );
                   }),
@@ -173,16 +201,16 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
     );
   }
 
-  Widget statusCell(bool value) {
+  Widget statusCell(bool value, bool highlighted) {
     final colours = value
         ? [
             const Color(0xFF123F17),
-            const Color(0xFF43A047),
+            highlighted ? Colors.lightGreenAccent : const Color(0xFF43A047),
             const Color(0xFF1B5E20),
           ]
         : [
             const Color(0xFF5A1010),
-            const Color(0xFFE53935),
+            highlighted ? Colors.redAccent : const Color(0xFFE53935),
             const Color(0xFF8B0000),
           ];
 
@@ -220,13 +248,6 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                     color: Colors.white24,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                ),
-              ),
-              Center(
-                child: Icon(
-                  value ? Icons.check : Icons.close,
-                  color: Colors.grey.shade900,
-                  size: 16,
                 ),
               ),
             ],

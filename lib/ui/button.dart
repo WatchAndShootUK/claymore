@@ -15,48 +15,55 @@ class ClaymoreButton extends StatelessWidget {
     this.backgroundColor = const Color(0xFF2F2F2F),
     this.icon,
   });
-
   @override
   Widget build(BuildContext context) {
-    final compact = MediaQuery.of(context).size.width < 700;
+    final compact = MediaQuery.of(context).size.width < 800;
 
     return SizedBox(
       height: 36,
-      width: compact
-          ? (icon == null ? 130 : 48)
-          : 130,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          backgroundColor: backgroundColor,
-          foregroundColor: textColor,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: const BorderSide(
-              color: Color(0xFF4A4A4A),
+      width: compact ? (icon == null ? 130 : 48) : 130,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              backgroundColor.withOpacity(1.0),
+              backgroundColor.withOpacity(0.9),
+              const Color(0xFF1E1E1E),
+            ],
+          ),
+          border: Border.all(color: Colors.black87, width: 1),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 15,
+              blurStyle: BlurStyle.normal,
+              offset: Offset(2, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onPressed,
+            child: Center(
+              child: compact && icon != null
+                  ? Icon(icon, color: textColor, size: 20)
+                  : Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
             ),
           ),
         ),
-        child: compact && icon != null
-            ? SizedBox.expand(
-                child: Center(
-                  child: Icon(
-                    icon,
-                    color: textColor,
-                    size: 18,
-                  ),
-                ),
-              )
-            : Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
       ),
     );
   }

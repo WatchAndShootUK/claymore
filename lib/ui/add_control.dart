@@ -30,12 +30,12 @@ class AddControlDialog extends StatefulWidget {
 class _AddControlDialogState extends State<AddControlDialog> {
   CountryLocation? selectedCountry;
 
+  late AppData appData = context.read<AppData>();
   bool get _isMobile => MediaQuery.of(context).size.width < 600;
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.control.id.isNotEmpty;
-    final appData = context.read<AppData>();
 
     return Dialog(
       backgroundColor: Colors.grey.shade900,
@@ -417,10 +417,10 @@ class _AddControlDialogState extends State<AddControlDialog> {
                                   ClaymoreDropdown<User>(
                                     label: 'Supervised By',
                                     value: appData.users.firstWhereOrNull(
-                                            (user) =>
-                                                user.id ==
-                                                widget.control.supervisedById,
-                                          ),
+                                      (user) =>
+                                          user.id ==
+                                          widget.control.supervisedById,
+                                    ),
                                     items: widget.readOnly
                                         ? appData.users
                                               .where(
