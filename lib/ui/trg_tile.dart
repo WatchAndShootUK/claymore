@@ -1,5 +1,5 @@
 import 'package:claymore/models/trg_event.dart';
-import 'package:claymore/pages/add_trg_event.dart';
+import 'package:claymore/ui/add_trg_event.dart';
 import 'package:claymore/services/firestore_service.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:claymore/ui/dialogs.dart';

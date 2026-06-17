@@ -1,8 +1,8 @@
 import 'package:claymore/models/control.dart';
 import 'package:claymore/models/trg_event.dart';
 import 'package:claymore/models/user.dart';
-import 'package:claymore/pages/add_control.dart';
-import 'package:claymore/pages/add_trg_event.dart';
+import 'package:claymore/ui/add_control.dart';
+import 'package:claymore/ui/add_trg_event.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:claymore/ui/button.dart';
 import 'package:claymore/ui/control_tile.dart';
