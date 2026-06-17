@@ -31,6 +31,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
     final visibleTrgEvents = appData.trgEvents
         .where((te) => te.trgJtacID == selectedJtac!.id)
         .toList();
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
@@ -116,7 +117,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
                     'training' => ListView.builder(
                       itemCount: visibleTrgEvents.length,
                       itemBuilder: (context, index) {
-                        TrgEvent te = appData.trgEvents[index];
+                        TrgEvent te = visibleTrgEvents[index];
                         return TrgTile(trgEvent: te);
                       },
                     ),
