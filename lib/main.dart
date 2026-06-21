@@ -1,6 +1,7 @@
 
 import 'package:claymore/pages/home_page.dart';
 import 'package:claymore/pages/login_page.dart';
+import 'package:claymore/services/logbook_converter.dart';
 import 'package:claymore/services/login_cache.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:collection/collection.dart';
@@ -66,7 +67,6 @@ class _MainAppState extends State<MainApp> {
         }
       });
     }
-
     return _material(loggedIn ? const HomePage() : LoginPage());
   }
 

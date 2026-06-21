@@ -1,8 +1,7 @@
-import 'package:claymore/models/user.dart';
 import 'package:claymore/pages/individual_panel.dart';
 import 'package:claymore/pages/organisation_panel.dart';
+import 'package:claymore/services/logbook_converter.dart';
 import 'package:claymore/state/app_data.dart';
-import 'package:claymore/ui/label.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,14 +13,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  User? selectedJtac;
   @override
   Widget build(BuildContext context) {
+
+
+    final appData = context.watch<AppData>();
     final isMobile = MediaQuery.of(context).size.width < 900;
 
     if (isMobile) {
       return DefaultTabController(
-        length: 4,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 80,
@@ -32,10 +33,23 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () =>
-                            DefaultTabController.of(context).animateTo(0),
-                        child: const Text('Logbook',
-                          style: TextStyle(color: Colors.grey),),
+                        onPressed: () {
+                          setState(() {
+                            appData.currentPage = 'logbook';
+                          });
+                          DefaultTabController.of(context).animateTo(0);
+                        },
+                        child: Text(
+                          'Logbook',
+                          style: TextStyle(
+                            color: appData.currentPage == 'logbook'
+                                ? Colors.white
+                                : Colors.grey,
+                            fontWeight: appData.currentPage == 'logbook'
+                                ? FontWeight.bold
+                                : FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
 
@@ -50,11 +64,22 @@ class _HomePageState extends State<HomePage> {
 
                     Expanded(
                       child: TextButton(
-                        onPressed: () =>
-                            DefaultTabController.of(context).animateTo(1),
-                        child: const Text(
+                        onPressed: () {
+                          setState(() {
+                            appData.currentPage = 'readiness';
+                          });
+                          DefaultTabController.of(context).animateTo(1);
+                        },
+                        child: Text(
                           'Readiness',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: appData.currentPage == 'readiness'
+                                ? Colors.white
+                                : Colors.grey,
+                            fontWeight: appData.currentPage == 'readiness'
+                                ? FontWeight.bold
+                                : FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -64,12 +89,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           body: const TabBarView(
-            children: [
-              IndividualPanel(),
-              OrganisationPanel(),
-              OrganisationPanel(),
-              OrganisationPanel(),
-            ],
+            children: [IndividualPanel(), OrganisationPanel()],
           ),
         ),
       );
@@ -79,12 +99,35 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         toolbarHeight: 80,
         backgroundColor: Colors.black,
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: SizedBox(
-            height: 75,
-            child: Image.asset('assets/logo.jpg', fit: BoxFit.contain),
-          ),
+        title: Row(
+          spacing: 16,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 75,
+              child: Image.asset('assets/logo.jpg', fit: BoxFit.contain),
+            ),
+            Column(
+              spacing: 5,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'CLAYMORE',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 5
+                  ),
+                ),
+                Text(
+                  'JTAC Currency Management for the Scottish Gunners',
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
       body: Row(

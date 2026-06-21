@@ -45,7 +45,7 @@ class _AddControlDialogState extends State<AddControlDialog> {
         child: Column(
           children: [
             Text(
-              isEditing ? 'Edit Control' : 'Add New Control',
+              widget.readOnly ? 'Edit Control' : 'Add New Control',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 22,

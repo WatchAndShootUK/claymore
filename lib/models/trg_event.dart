@@ -35,7 +35,6 @@ class TrgEvent {
   }
 
   factory TrgEvent.fromFirestore(String id, Map<String, dynamic> data) {
-    print('test');
     return TrgEvent(
       id: id,
       trgDate: _dateFromAny(data['trgDate']),

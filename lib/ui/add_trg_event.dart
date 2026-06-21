@@ -109,20 +109,20 @@ class _AddTrgEventDialogState extends State<AddTrgEventDialog> {
                                   });
                                 },
                               ),
-                              ClaymoreDropdown(
-                                label: 'Training Type',
-                                value: widget.trgEvent.trgType != ''
-                                    ? widget.trgEvent.trgType
-                                    : null,
-                                items: ['PCCS Training', 'PMS Training'],
-                                itemLabel: (item) => item,
-                                onChanged: (value) {
-                                  if (value == null) return;
-                                  setState(() {
-                                    widget.trgEvent.trgType = value;
-                                  });
-                                },
-                              ),
+                            ClaymoreDropdown(
+                              label: 'Training Type',
+                              value: widget.trgEvent.trgType != ''
+                                  ? widget.trgEvent.trgType
+                                  : null,
+                              items: ['PCCS Training', 'PMS Training'],
+                              itemLabel: (item) => item,
+                              onChanged: (value) {
+                                if (value == null) return;
+                                setState(() {
+                                  widget.trgEvent.trgType = value;
+                                });
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -160,7 +160,7 @@ class _AddTrgEventDialogState extends State<AddTrgEventDialog> {
             ),
 
             const SizedBox(height: 16),
-            _actionBar(appData: appData, isEditing: true),
+            _actionBar(appData: appData, isEditing: true, context: context),
           ],
         ),
       ),
@@ -169,7 +169,9 @@ class _AddTrgEventDialogState extends State<AddTrgEventDialog> {
 
   Widget _pccsLine({required String input, required bool readOnly}) {
     final appData = context.read<AppData>();
-    bool alreadyPCCS = appData.currentUser.qualification != 'JTAC-C' || appData.selectedJtac == appData.currentUser;
+    bool alreadyPCCS =
+        appData.currentUser.qualification != 'JTAC-C' ||
+        appData.selectedJtac == appData.currentUser;
     final firstSpace = input.indexOf(' ');
 
     final inputSerial = firstSpace == -1
@@ -194,7 +196,9 @@ class _AddTrgEventDialogState extends State<AddTrgEventDialog> {
               ),
               Expanded(child: ClaymoreLabel(inputString)),
               Checkbox(
-                value: alreadyPCCS ? true : widget.trgEvent.trgDetails.contains(inputSerial),
+                value: alreadyPCCS
+                    ? true
+                    : widget.trgEvent.trgDetails.contains(inputSerial),
                 onChanged: (value) {
                   setState(() {
                     if (value == true) {
@@ -242,7 +246,11 @@ class _AddTrgEventDialogState extends State<AddTrgEventDialog> {
     );
   }
 
-  Widget _actionBar({required AppData appData, required bool isEditing}) {
+  Widget _actionBar({
+    required AppData appData,
+    required BuildContext context,
+    required bool isEditing,
+  }) {
     return Wrap(
       alignment: WrapAlignment.end,
       spacing: 12,

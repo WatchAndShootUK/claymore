@@ -126,7 +126,7 @@ class _ControlTileState extends State<ControlTile> {
                     }
                   },
                 ),
-              if (control.controllingJTACId != appData.currentUser.id)
+              if (control.approved == true)
                 GestureDetector(
                   child: const Icon(
                     Icons.remove_red_eye,

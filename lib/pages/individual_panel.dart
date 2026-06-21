@@ -1,6 +1,7 @@
 import 'package:claymore/models/control.dart';
 import 'package:claymore/models/trg_event.dart';
 import 'package:claymore/models/user.dart';
+import 'package:claymore/ui/uploader_dialog.dart';
 import 'package:claymore/ui/add_control.dart';
 import 'package:claymore/ui/add_trg_event.dart';
 import 'package:claymore/state/app_data.dart';
@@ -19,18 +20,22 @@ class IndividualPanel extends StatefulWidget {
 }
 
 class _IndividualPanelState extends State<IndividualPanel> {
-  String currentView = 'controls';
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 900;
     final appData = context.watch<AppData>();
     final selectedJtac = appData.selectedJtac;
-    final visibleControls = appData.controls
-        .where((control) => control.controllingJTACId == selectedJtac!.id)
-        .toList();
-    final visibleTrgEvents = appData.trgEvents
-        .where((te) => te.trgJtacID == selectedJtac!.id)
-        .toList();
+    final visibleControls =
+        appData.controls
+            .where((control) => control.controllingJTACId == selectedJtac!.id)
+            .toList()
+          ..sort((a, b) => b.controlDate.compareTo(a.controlDate));
+
+    final visibleTrgEvents =
+        appData.trgEvents
+            .where((te) => te.trgJtacID == selectedJtac!.id)
+            .toList()
+          ..sort((a, b) => b.trgDate.compareTo(a.trgDate));
 
     return Container(
       decoration: BoxDecoration(
@@ -51,7 +56,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
         children: [
           if (isMobile)
             Padding(
-              padding: EdgeInsetsGeometry.all(5),
+              padding: EdgeInsetsGeometry.fromLTRB(5, 5, 0, 5),
               child: SizedBox(
                 width: 200,
                 child: Text(
@@ -104,7 +109,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
                       colors: [const Color(0xFF1E1E1E), Colors.grey.shade800],
                     ),
                   ),
-                  child: switch (currentView) {
+                  child: switch (appData.currentView) {
                     'controls' => ListView.builder(
                       itemCount: visibleControls.length,
                       itemBuilder: (context, index) {
@@ -144,7 +149,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Align(
                       alignment: AlignmentGeometry.bottomEnd,
-                      child: switch (currentView) {
+                      child: switch (appData.currentView) {
                         'controls' => ClaymoreButton(
                           text: 'Add Control',
                           backgroundColor: Colors.green.shade800,
@@ -171,6 +176,18 @@ class _IndividualPanelState extends State<IndividualPanel> {
                       },
                     ),
                   ),
+                if (appData.selectedJtac == appData.currentUser)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Align(
+                      alignment: AlignmentGeometry.bottomStart,
+                      child: ClaymoreButton(
+                        text: 'Upload Control',
+                        backgroundColor: Colors.yellow.shade800,
+                        onPressed: () => uploaderDialog(context, appData),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -187,13 +204,14 @@ class _IndividualPanelState extends State<IndividualPanel> {
   }
 
   Widget _tabButton(String text, String view) {
-    final selected = currentView == view;
+    final appData = context.watch<AppData>();
+    final selected = appData.currentView == view;
 
     return Expanded(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            currentView = view;
+            appData.currentView = view;
           });
         },
         child: AnimatedContainer(

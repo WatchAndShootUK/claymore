@@ -12,11 +12,23 @@ class AppData extends ChangeNotifier {
   List<TrgEvent> trgEvents = [];
   User currentUser = User.empty();
   User? _selectedJtac;
-
+  String? _currentPage;
+  String? get currentPage => _currentPage ?? 'logbook';
+  String? _currentView;
+  String? get currentView => _currentView ?? 'controls';
   User? get selectedJtac => _selectedJtac;
 
   set selectedJtac(User? user) {
     _selectedJtac = user;
+    notifyListeners();
+  }
+
+  set currentPage(String view) {
+    _currentPage = view;
+    notifyListeners();
+  }
+  set currentView(String view) {
+    _currentView = view;
     notifyListeners();
   }
 
