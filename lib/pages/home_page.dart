@@ -1,6 +1,6 @@
 import 'package:claymore/pages/individual_panel.dart';
 import 'package:claymore/pages/organisation_panel.dart';
-import 'package:claymore/services/logbook_converter.dart';
+import 'package:claymore/ui/uploader_dialog.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
