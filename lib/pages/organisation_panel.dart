@@ -18,6 +18,8 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
   Widget build(BuildContext context) {
     final appData = context.watch<AppData>();
     final isMobile = MediaQuery.of(context).size.width < 900;
+    final users = [...appData.users]
+      ..sort((a, b) => a.callsign.compareTo(b.callsign));
 
     return Container(
       margin: const EdgeInsets.fromLTRB(6, 12, 12, 12),
@@ -78,7 +80,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                       _headerCell('Eval'),
                     ],
                   ),
-                  ...appData.users.map((user) {
+                  ...users.map((user) {
                     final userControls = appData.controls
                         .where((c) => c.controllingJTACId == user.id)
                         .toList();
@@ -125,8 +127,12 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                                         fontSize:
                                             appData.selectedJtac?.getUserName ==
                                                 user.getUserName
-                                            ? !isMobile ? 15 : 13
-                                            : !isMobile ? 13 : 11,
+                                            ? !isMobile
+                                                  ? 15
+                                                  : 13
+                                            : !isMobile
+                                            ? 13
+                                            : 11,
                                         fontWeight:
                                             appData.selectedJtac?.getUserName ==
                                                 user.getUserName
