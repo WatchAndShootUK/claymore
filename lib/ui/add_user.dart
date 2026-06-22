@@ -102,7 +102,13 @@ class _AddUserDialogState extends State<AddUserDialog> {
                                 ClaymoreDropdown<String>(
                                   label: 'Qualification',
                                   value: widget.user.qualification,
-                                  items: ['JTAC-C', 'JTAC-Q', 'JTAC-I', 'JTAC-E', ''],
+                                  items: [
+                                    'JTAC-C',
+                                    'JTAC-Q',
+                                    'JTAC-I',
+                                    'JTAC-E',
+                                    '',
+                                  ],
                                   itemLabel: (item) => item,
                                   onChanged: (qual) {
                                     if (qual == null) return;
@@ -137,33 +143,6 @@ class _AddUserDialogState extends State<AddUserDialog> {
       spacing: 12,
       runSpacing: 8,
       children: [
-        if (widget.isEditing)
-          ClaymoreButton(
-            onPressed: widget.user.id.isEmpty
-                ? null
-                : () async {
-                    if (!await showDeleteDialog(context)) return;
-
-                    try {
-                      await FirestoreService.delete(
-                        collectionPath: 'users',
-                        docId: widget.user.id,
-                      );
-
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                    } catch (e) {
-                      debugPrint('Failed to delete user: $e');
-
-                      if (!context.mounted) return;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to delete user: $e')),
-                      );
-                    }
-                  },
-            text: 'Delete',
-          ),
         ClaymoreButton(
           onPressed: () => Navigator.pop(context),
           text: widget.isEditing ? 'Back' : 'Cancel',
