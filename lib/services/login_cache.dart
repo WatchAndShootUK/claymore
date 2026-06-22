@@ -1,3 +1,5 @@
+import 'package:claymore/models/user.dart';
+import 'package:claymore/state/app_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginCache {

@@ -1,18 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String id;
-  final String serviceNumber;
-  final String rank;
-  final String firstName;
-  final String lastName;
-  final String qualification;
-  final String callsign;
-  final String password;
+   String id;
+   String rank;
+   String firstName;
+   String lastName;
+   String qualification;
+   String callsign;
+   String password;
 
   User({
     required this.id,
-    required this.serviceNumber,
     required this.rank,
     required this.firstName,
     required this.lastName,
@@ -24,13 +21,12 @@ class User {
   factory User.empty() {
     return User(
       id: '',
-      serviceNumber: '',
       rank: '',
       firstName: '',
       lastName: '',
       qualification: '',
       callsign: '',
-      password: '',
+      password: 'password',
     );
   }
 
@@ -40,7 +36,6 @@ class User {
   factory User.fromFirestore(String id, Map<String, dynamic> data) {
     return User(
       id: id,
-      serviceNumber: data['serviceNumber'] ?? '',
       rank: data['rank'] ?? '',
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',
@@ -52,8 +47,6 @@ class User {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
-      'serviceNumber': serviceNumber,
       'rank': rank,
       'firstName': firstName,
       'lastName': lastName,

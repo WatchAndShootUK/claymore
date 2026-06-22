@@ -1,6 +1,7 @@
 import 'package:claymore/pages/individual_panel.dart';
+import 'package:claymore/pages/login_page.dart';
 import 'package:claymore/pages/organisation_panel.dart';
-import 'package:claymore/ui/uploader_dialog.dart';
+import 'package:claymore/services/login_cache.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,8 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-
-
     final appData = context.watch<AppData>();
     final isMobile = MediaQuery.of(context).size.width < 900;
 
@@ -118,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
-                    letterSpacing: 5
+                    letterSpacing: 5,
                   ),
                 ),
                 Text(
@@ -126,6 +125,19 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ],
+            ),
+            Spacer(),
+            Text(appData.currentUser.getUserName, style: TextStyle(fontSize: 18),),
+            GestureDetector(
+              onTap: () {
+                LoginCache.clear();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => LoginPage()),
+                  (route) => false,
+                );
+              },
+              child: Icon(Icons.logout),
             ),
           ],
         ),

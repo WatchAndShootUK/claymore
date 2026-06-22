@@ -2,6 +2,7 @@ import 'package:claymore/models/user.dart';
 import 'package:claymore/services/currency_calculator.dart';
 import 'package:claymore/services/pms_calculator.dart';
 import 'package:claymore/state/app_data.dart';
+import 'package:claymore/ui/add_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +43,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
       ),
       child: Column(
         children: [
-          _titleBar(),
+          _titleBar(appData),
           const SizedBox(height: 12),
           Expanded(
             child: ClipRRect(
@@ -109,26 +110,55 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                                 onTap: () {
                                   appData.selectedJtac = user;
                                 },
-                                child: Text(
-                                  user.getUserName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color:
-                                        appData.selectedJtac?.getUserName ==
-                                            user.getUserName
-                                        ? Colors.white
-                                        : Colors.white70,
-                                    fontSize:
-                                        appData.selectedJtac?.getUserName ==
-                                            user.getUserName
-                                        ? 15
-                                        : 13,
-                                    fontWeight:
-                                        appData.selectedJtac?.getUserName ==
-                                            user.getUserName
-                                        ? FontWeight.bold
-                                        : FontWeight.w500,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      user.getUserName,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color:
+                                            appData.selectedJtac?.getUserName ==
+                                                user.getUserName
+                                            ? Colors.white
+                                            : Colors.white70,
+                                        fontSize:
+                                            appData.selectedJtac?.getUserName ==
+                                                user.getUserName
+                                            ? 15
+                                            : 13,
+                                        fontWeight:
+                                            appData.selectedJtac?.getUserName ==
+                                                user.getUserName
+                                            ? FontWeight.bold
+                                            : FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    if (appData.currentUser.qualification ==
+                                            'JTAC-E' ||
+                                        appData.currentUser.lastName ==
+                                            'Wileman')
+                                      GestureDetector(
+                                        onTap: () => showDialog(
+                                          context: context,
+                                          builder: (context) => AddUserDialog(
+                                            user: user,
+                                            isEditing: true,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 15,
+                                          color:
+                                              appData
+                                                      .selectedJtac
+                                                      ?.getUserName ==
+                                                  user.getUserName
+                                              ? Colors.white
+                                              : Colors.white70,
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -166,9 +196,9 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
     );
   }
 
-  Widget _titleBar() {
+  Widget _titleBar(AppData appData) {
     return Row(
-      children: const [
+      children: [
         Icon(Icons.groups, color: Colors.white70, size: 20),
         SizedBox(width: 8),
         Text(
@@ -180,6 +210,30 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
             letterSpacing: 0.6,
           ),
         ),
+        Spacer(),
+        if (appData.currentUser.qualification == 'JTAC-E' ||
+            appData.currentUser.lastName == 'Wileman')
+          GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (context) =>
+                  AddUserDialog(user: User.empty(), isEditing: false),
+            ),
+            child: Stack(
+              children: [
+                Icon(Icons.person, color: Colors.white70, size: 30),
+                Positioned(
+                  left: 15,
+                  bottom: 0,
+                  child: Icon(
+                    Icons.add_circle,
+                    color: Colors.blue.shade900,
+                    size: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }

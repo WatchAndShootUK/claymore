@@ -176,7 +176,7 @@ class _IndividualPanelState extends State<IndividualPanel> {
                       },
                     ),
                   ),
-                if (appData.selectedJtac == appData.currentUser)
+                if (appData.selectedJtac == appData.currentUser && appData.currentView == 'controls')
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Align(

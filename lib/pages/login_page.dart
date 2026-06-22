@@ -1,4 +1,5 @@
 import 'package:claymore/pages/home_page.dart';
+import 'package:claymore/services/firestore_service.dart';
 import 'package:claymore/services/login_cache.dart';
 import 'package:claymore/state/app_data.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,11 @@ import 'package:collection/collection.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final serviceNumberController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     TextField(
-                      controller: serviceNumberController,
+                      controller: usernameController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: 'Service Number',
@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () async {
-                          if (serviceNumberController.text.isEmpty ||
+                          if (usernameController.text.isEmpty ||
                               passwordController.text.isEmpty) {
                             showDialog(
                               context: context,
@@ -98,22 +98,77 @@ class LoginPage extends StatelessWidget {
                           final appData = context.read<AppData>();
                           final user = appData.users.firstWhereOrNull(
                             (u) =>
-                                u.serviceNumber ==
-                                    serviceNumberController.text &&
+                                (u.firstName + u.lastName).toLowerCase() ==
+                                    usernameController.text.toLowerCase() &&
                                 u.password == passwordController.text,
                           );
                           if (user != null) {
                             appData.currentUser = user;
                             appData.selectedJtac = user;
-
                             await LoginCache.saveUserId(user.id);
-                            
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                            );
+
+                            if (user.password == 'password') {
+                              final newPasswordController =
+                                  TextEditingController();
+
+                              final result = await showDialog<bool>(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Choose a password'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextField(
+                                          controller: newPasswordController,
+                                          obscureText: true,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Password',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
+                                        child: const Text('Continue'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (result == true) {
+                                user.password = newPasswordController.text;
+
+                                await FirestoreService.update(
+                                  collectionPath: 'users',
+                                  docId: user.id,
+                                  data: user.toFirestore(),
+                                );
+
+                                if (!context.mounted) return;
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const HomePage(),
+                                  ),
+                                );
+                              }
+                            } else {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomePage(),
+                                ),
+                              );
+                            }
                           } else {
                             showDialog(
                               context: context,
@@ -132,7 +187,6 @@ class LoginPage extends StatelessWidget {
                                 ],
                               ),
                             );
-                            serviceNumberController.clear();
                             passwordController.clear();
                             return;
                           }
