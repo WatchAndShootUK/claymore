@@ -17,6 +17,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
   @override
   Widget build(BuildContext context) {
     final appData = context.watch<AppData>();
+    final isMobile = MediaQuery.of(context).size.width < 900;
 
     return Container(
       margin: const EdgeInsets.fromLTRB(6, 12, 12, 12),
@@ -43,7 +44,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
       ),
       child: Column(
         children: [
-          _titleBar(appData),
+          _titleBar(appData, isMobile),
           const SizedBox(height: 12),
           Expanded(
             child: ClipRRect(
@@ -124,8 +125,8 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
                                         fontSize:
                                             appData.selectedJtac?.getUserName ==
                                                 user.getUserName
-                                            ? 15
-                                            : 13,
+                                            ? !isMobile ? 15 : 13
+                                            : !isMobile ? 13 : 11,
                                         fontWeight:
                                             appData.selectedJtac?.getUserName ==
                                                 user.getUserName
@@ -196,7 +197,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
     );
   }
 
-  Widget _titleBar(AppData appData) {
+  Widget _titleBar(AppData appData, bool isMobile) {
     return Row(
       children: [
         Icon(Icons.groups, color: Colors.white70, size: 20),
@@ -205,7 +206,7 @@ class _OrganisationPanelState extends State<OrganisationPanel> {
           'Lloyds (Air) Troop Readiness Tracker',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: isMobile ? 10 : 16,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.6,
           ),

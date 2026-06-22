@@ -102,7 +102,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                                 ClaymoreDropdown<String>(
                                   label: 'Qualification',
                                   value: widget.user.qualification,
-                                  items: ['JTAC-C', 'JTAC-I', 'JTAC-E', ''],
+                                  items: ['JTAC-C', 'JTAC-Q', 'JTAC-I', 'JTAC-E', ''],
                                   itemLabel: (item) => item,
                                   onChanged: (qual) {
                                     if (qual == null) return;
